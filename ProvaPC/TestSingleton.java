@@ -5,7 +5,7 @@ public class TestSingleton{
     }
     public void testPrintSomething(){
         init_state();
-        if(single.printSomething().equals("Something...XD"))
+        if(single.printSomething().equals("Something... XD"))
             System.out.println("test Print something: SUCCESS");
         else 
         System.out.println("test Print something: FAILED");
