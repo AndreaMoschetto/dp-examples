@@ -6,7 +6,7 @@ import java.util.List;
  * parttern
  */
 public class Studente implements IStudente{
-    List<Esame> exams = new ArrayList<>(); 
+    private List<Esame> exams = new ArrayList<>(); 
 
     @Override
     public float getMedia(){
