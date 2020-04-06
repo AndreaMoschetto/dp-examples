@@ -28,8 +28,5 @@ public class CreatorPool{
     public void releaseShape(Shape shape){
         if(pool.size() >= MAXSIZE) return;
         pool.add(shape);
-        shape = null;
-        
-        System.out.println("IN CreatorPool: riferimento eliminato");
     }
 }

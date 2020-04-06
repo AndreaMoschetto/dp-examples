@@ -22,6 +22,8 @@ public class Client {
 
         pool.releaseShape(s2); //ora rilascio la s2
         printShape(s2);//Ma la printo lo stesso dopo che l'ho rilasciata
-        //purtroppo da lo stesso valore che dava la precedente print quindi l'istanza è ancora qui 
+        //purtroppo da lo stesso valore che dava la precedente print quindi l'istanza è ancora qui
+        //ma il prof Tramontana mi ha detto che semplicement il pool si fida del client
+        //che dopo il release dovrebbe fare un bell s2 = null 
     }
 }
