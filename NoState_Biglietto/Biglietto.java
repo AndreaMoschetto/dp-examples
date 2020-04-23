@@ -1,7 +1,10 @@
+//Questa classe è un esempio di come non programmare:
+//Si mostra un caso che necessita di un refactoring verso State_DesignPattern
+//Un chiaro sintomo è la presenza eccessiva di switch e enum
 public class Biglietto {
     private String codice = "XYZ", nome;
     private int prezzo = 100;
-
+    //Non sempre gli enum sono necessari, in questo caso non sarebbe servito se avessimo usato lo State_DP
     private enum StatoBiglietto {
         DISP, BLOC, VEND
     }
