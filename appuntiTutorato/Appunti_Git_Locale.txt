@@ -1,0 +1,247 @@
+Git permette di gestire la crescita e lo sviluppo del software, di versionarlo, commentarne lo sviluppo e lavorare in team sullo stesso progetto.
+
+Git is a distributed VCS(version control system)
+
+git --version: da info su lla versione attuale di git.
+
+CONFIGURAZIONE
+Quantomeno vanno settati:
+    git config --global user.name "nome"
+    git config --global user.email "email@blabla.com"
+    git config --global core.editor vim 
+
+git config --list: per vedere la configurazione attuale
+
+---------------------------------------------------------------------------------------
+
+
+INITIALIZING
+git init: crea un repository locale vuoto (il file .git per intenderci)
+---------------------------------------------------------------------------------------
+
+
+CHECK REPOSITORY STATUS
+git status: mostra la staging area e il branch attivo o HEAD
+git log: mostra uno storico dei commit
+git graph: mostra l'albero dei commit
+    OPTIONS
+    --all: mostra anche i rami non raggiungibili dal branch attivo
+---------------------------------------------------------------------------------------
+
+MANAGING THE REPOSITORY
+git add <nomefile>: aggiunge il file al commit nella staging area
+git commit -m "first commit": chiude il commit con un commento
+    OPTIONS
+    -a: è come se prima avessi fatto " add " automatico di tutti i modified e poi commit
+
+git branch: mostra tutti i branch raggiungibili da quello attuale
+    OPTIONS
+    -a  mostra anche quelli non raggiungibli
+
+git branch <nome branch>: crea un nuovo branch con quel nome
+    OPTIONS
+    -d: elimina <nome branch>
+
+git checkout <nome branch>: sposta HEAD su <nome branch>
+    -ovviamente verrà sostituito il contenuto della working directory
+     con quello del beanch nuovo
+    -la staging area non viene svuotata (in molti casi)
+    OPTIONS
+    -b : crea il branch e fa il checkout verso esso
+
+git merge <nome branch>: fa un merge tra HEAD e <nome branch>
+
+__________________________________________________________________________________________________
+                            THEORICAL NOTES
+
+COMMIT
+Un commit è una istantanea di tutta la working directory
+
+STAGING AREA
+è una un insteme contenente tutti i file da aggiungere al prossimo commit
+
+BRANCH
+-Concettualmente è una linea della vita del progetto che si separa dal MasterBranch 
+-Tecnicamente è un puntatore all'ultimo commit di quel branch;
+-Il nome del puntatore è il nome del branch scelto da noi
+
+MASTER
+-Concettualmente è la linea della vita principale del progetto
+-Tecnicamente è un puntatore all'ultimo commit del MasterBranch;
+-Il nome del puntatore è "master"
+
+HEAD
+è solo un puntatore al branch attualmente attivo
+
+MERGE
+è una azione che si effettua fra l'HEAD(qualunque branch esso sia) e il branch indicato (chiamiamolo <feature>) e unisce 
+tutte le modifiche dei tue branch sotto il branch HEAD.
+Può avvenire in due modi:
+    FAST_FORWARD
+    In tal caso il branch <feature> non ha mai fatto altre modifiche dopo la separazione con HEAD
+    quindi il puntatore di <feature> si sposterà in avanti fino a coincidere con HEAD
+    
+    COMMIT_MERGE
+    In tal caso sia HEAD che <feature> hanno apportato modifiche separatamente al progetto
+    quindi verrà creato un nuovo commit di merge che punta ad entrambi i commit HEAD e <feature>
+    unendoli sotto un solo branch HEAD.
+    Può creare conflitti
+Dopo il merge rimarrà comunque il branch <feature> che se ha finito il suo lavoro potrà benissimo essere
+eliminato, tanto di fatto non perdiamo nulla dato che quei commit sono ormai raggiungibili da HEAD
+
+CONFLITTI
+Si presentano quando un CommitMerge unisce due commit che agiscono diversamente sulle stesse aree del progetto
+Git in automatico proverà a fare l'autoMerge ma se non può allora ci mostra i file in questione 
+con indicate le modifiche che vorrebbe fare HEAD e quelle che vorrebbe fare <feature>
+Lasciando a noi il compito di gestire la cosa.
+Dovremo 
+        -modificare i file risolvendo i conflitti;
+        -aggiungerli alla staging area e fare un commit senza messaggio, perchè lui riprenderà il commit di merge
+
+__________________________________________________________________________________________________
+                                 BRANCHING WORKFLOWS: BASICS
+
+Esistono modi diversi di utilizzare i branch, detti workflow, che dipendono da diversi fattori.
+Principalmente si dividono in due:
+
+    LONG RUNNING BRANCH
+        -always open (never deleted) tipo il Master
+        -used for different stages of development cycle with various levels of stability
+        -when a more stable level is reached they're merged into the branch above them
+            --master: only stable code
+            --develop: code under development
+
+    TOPIC BRANCH
+        -short-lived branch (deleted after merge)
+        -created and used for a single particular feature or work
+            --New fratures
+            --Issue fix
+            --Hot fix
+        -(generally too expensive in older VCS)
+
+
+ __________________________________________________________________________________________________
+|_______________________________________GO REMOTE__________________________________________________|
+
+__________________________________________________________________________________________________
+                                    COMMAND NOTES
+
+INITIALIZE A REMOTE REPOSITORY
+Ho due modi:
+CLONE REPOSITORY REMOTO
+    -creo il repository dal sito del servizio e lo inizializzo lì
+        Es. su gitHub spunto "Initialize Repository with a README file"
+    -clono il repository con:
+        git clone https://www.github.com/username/RepoName.git
+
+INIT LOCALE
+    -crea la repo locale con "git init"
+    -metto un file (solitamente un README)
+    -vado su github e creo la repo remota senza spuntare "Initialize Repository with a README file"
+    -torno su locale e faccio:
+        git remote add origin https://www.github.com/username/RepoName.git
+     per aggiungere la remote origin, che punta alla repo, manualmente
+    -ed in fine faccio:
+        git push origin master
+     per pushare la repo locale su origin/master remoto
+--------------------------------------------------------------------------------------------------
+
+COMMANDS
+
+git remote -v : mostra a cosa corrisponde origin 
+
+git fetch: scarica tutti i branch remoti senza aggiornare quelli locali (senza merge per intenderci)
+        è il miglior modo per vedere in che stato è la repo remota.
+        Si può fare praticamente sempre senza problemi
+
+git pull: vuole specificato un branch e lo scarica da remoto facendo in automatico il merge;
+        in soldoni aggiorno le modifiche in locale tramite quelle in remoto
+
+git push: opposto al pull, aggiorno le modifiche in remoto tramite quelle in locale
+
+git remote add upstream https://www.github.com/ownername/RepoName.git
+    mi permette di aggiungere il riferimento upstream verso la repo di cui ho fatto il fork
+
+__________________________________________________________________________________________________
+                                    THEORICAL NOTES
+
+REPOSITORY REMOTO
+é un repository che sta su un server che lo hosta tipo gitHub, gitLab, bitBucket.
+
+ORIGIN MASTER
+è un puntatore al branch master del repository remoto
+-si chiama "origin/master"
+
+ORIGIN
+-origin in generale è un riferimento al repository remoto da cui ho fatto git clone
+-Ogni branch che ha un corrispettivo remoto avrà un puntatore chiamato origin/<nome branch>
+
+
+CLONE
+Tecnicamente quando faccio il clone succedono tre cose:
+-crea una copia del repository remoto
+-aggiunge un remote chiamato origin che punta alla repo
+-fa un checkout al master
+
+------------------------------------------------------------------------------------------------
+
+GIT COLLAB
+
+FORK
+Si tratta di una copia sotto il proprio nome di un repository remoto di qualcun altro.
+così da poterci lavorare come voglio tramite dei branch senza intaccare quello "vero"
+
+UPSTREAM
+è come origin però si riferisce alla repo da cue è stato fatto il fork.
+Posso aggiungere il riferimento upstream per farci un fetch di tanto in tanto così da tenere sotto controllo
+lo sviluppo del progetto originale, in caso qualcuno continui a lavorarci mentre lo sto facendo anche io.
+
+ISSUE
+Tipo dei commenti rivolti a tutto il progetto che fanno richieste di contributo:
+    -Bugfix
+    -Enhancements
+    -New Features
+Aprono delle vere e proprie discussioni a mo di forum
+Così potrò lavorare sulla issue in questione, in un branch che ho aperto sulla mia fork della repo "originale"
+Una volta finito il mio lavoro dovrò fare una pull request
+Posso prendermi carico di fixare una issue cliccando su assign to yourself in gitHub
+
+PULL REQUEST
+Richiesta effettuata allo sviluppatore principale di una repo:
+si chiede di effettuare un merge tra due branch che stanno su due repo diverse:
+-un branch sulla repo UpStream
+-un branch sulla repo Origin
+Si usa per esempio se la richiesta proviene da dei collaboratori esterni che non conosco che hanno fatto la fork del mio
+repository e stanno implementando qualcosa.
+
+    IN SINTESI:
+    -Lo sviluppatore ha accesso in sola lettura, ma ha fatto un fork del progetto nel suo namespace;
+    -UpStream è il riferimento (remote) al repository da cue è stato fatto il fork;
+    -Le modifiche vengono aggiunte ad un topic branch sul repository provato (origin);
+    -Viene svviata una pull request per fare il merge di due branch in repository diversi;
+    -Tipicamente tra un topic branch in origin e il master in upstream
+
+
+MERGE REQUEST
+(Git hub la tratta allo stesso modo della pull request perchè la differenza è solo concettuale)
+Si tratta di una richiesta come il pull request solo che i due branch in questione stanno sullo stesso repository.
+Si usa per esempio se la richiesta proviene da dei miei collaboratori di un progetto che però non hanno i permessi di 
+scrittura sul master, cosa corretta perchè il master va protetto.
+Questi collaboratori non hanno avuto bisogno di fare la fork ovviamente, altrimenti sarebbe stata una pull request.
+
+    IN SINTESI:
+    -Lo sviluppatore deve avere accesso in scrittura (push anilitato), facendo parte dei contributors del progetto (origin);
+    -Consiste nel richiedere il merge di due branch nello stesso repository;
+    -Tipicamente tra un topic branch e il master in origin;
+    -Tipicamente il master è protetto, e solo il maintainer può approvare i commit
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+GITHUB FLOW
+1. Creare un topic branch dal master;
+2. Fare dei commit per migliorare il progetto;
+3. Aprire una Pull Request
+4. Gli sviluppatori discutono le modifiche, e potenzialmente aggiungono altri commit;
+5. Si fa il pull e il test delle modifiche;
+6. Si fa il merge del topic branch nel master;
