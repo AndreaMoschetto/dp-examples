@@ -1,0 +1,25 @@
+@startuml Factory Method
+
+interface Facroty{
+    + {static} FactoryMethod() : Product
+}
+
+class ConcreteFactory{
+    + {static} FactoryMethod() :  Product 
+}
+
+interface Product
+
+class ConcreteProductA
+class ConcreteProductB
+
+class Client
+
+
+
+
+
+
+
+
+@enduml
