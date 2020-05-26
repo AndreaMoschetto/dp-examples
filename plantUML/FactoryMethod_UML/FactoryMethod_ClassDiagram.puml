@@ -1,0 +1,54 @@
+@startuml Factory Method
+
+
+'START STYLE
+skinparam{
+    monochrome true
+    'shadowing false
+    classBackgroundColor white
+    noteBackgroundColor white
+    ClassAttributeIconSize 0
+}
+hide circle
+'END STYLE
+
+title Factory Method - Class Diagram
+
+interface Creator{
+    + factoryMethod() : Product
+    + operations()
+}
+
+class ConcreteCreator extends Creator{
+    + factoryMethod() :  Product 
+    
+}
+note right of ConcreteCreator::FactoryMethod
+    implements 
+    <b>Factory Method</b>
+end note
+
+interface Product<<interface>>
+
+
+class ConcreteProductA implements Product
+class ConcreteProductB implements Product
+
+
+
+class Client
+
+
+
+Product -right> Creator
+
+ConcreteCreator -left> ConcreteProductA
+ConcreteCreator -left> ConcreteProductB
+
+Client -right> Product
+
+
+
+
+
+@enduml
