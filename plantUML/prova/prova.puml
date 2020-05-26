@@ -1,14 +1,19 @@
 @startuml Factory Method
 
-interface Facroty{
+interface Factory<<interface>>{
     + {static} FactoryMethod() : Product
 }
 
 class ConcreteFactory{
     + {static} FactoryMethod() :  Product 
+    
 }
+note left 
+    implements 
+    <b>Factory Method</b>
+end note
 
-interface Product
+interface Product<<interface>>
 
 class ConcreteProductA
 class ConcreteProductB
@@ -16,6 +21,7 @@ class ConcreteProductB
 class Client
 
 
+ConcreteFactory --|> Factory
 
 
 
