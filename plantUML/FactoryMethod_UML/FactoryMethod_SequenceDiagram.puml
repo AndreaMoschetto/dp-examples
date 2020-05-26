@@ -1,0 +1,43 @@
+@startuml
+
+'START STYLE
+skinparam{
+    monochrome true
+}
+skinparam sequence{
+    participantBackgroundColor white
+}
+
+hide footbox
+'END STYLE
+
+title Factory Method - Sequence Diagram
+
+'Aggiungo dell etichette
+participant "Client" as c
+participant "cc:ConcreteCreator" as cc
+participant "cp:ConcreteProductA" as cp
+
+'attivo il client
+activate c
+
+
+
+c -> cc : operations()
+activate cc
+
+cc -> cc + : factoryMethod()
+
+cc -> cp ** : new
+
+cc --> cc - : cp
+
+cc --> c : cp
+deactivate cc
+
+c -> cp : request()
+activate cp
+cp --> c
+deactivate cp
+
+@enduml
