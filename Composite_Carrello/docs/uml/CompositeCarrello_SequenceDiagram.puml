@@ -1,0 +1,53 @@
+@startuml
+
+'START STYLE
+skinparam{
+    monochrome true
+}
+skinparam sequence{
+    participantBackgroundColor white
+}
+
+hide footbox
+'END STYLE
+
+title Factory Method - Sequence Diagram
+
+'Aggiungo dell etichette
+participant "MainCart" as main
+participant ":Creator" as creator
+participant "cart:Carrello" as cart
+participant "lib:Libro" as lib
+participant "eb:EBook" as eb
+
+activate main
+
+main -> creator : getCarrello()
+activate creator
+creator -> cart ** : new
+main <-- creator : cart
+deactivate creator
+
+main -> creator : getLibro()
+activate creator
+creator -> lib ** : new
+main <-- creator : lib
+deactivate creator
+
+main -> creator : getEBook()
+activate creator
+creator -> eb ** : new
+main <-- creator : eb
+deactivate creator
+
+main -> cart : add(lib)
+activate cart
+deactivate cart
+
+main -> cart : add(eb)
+activate cart
+deactivate cart
+
+'TODO: cart.getPrezzo()
+
+@enduml

@@ -23,7 +23,7 @@ class ConcreteCreator extends Creator{
     + factoryMethod() :  Product 
     
 }
-note right of ConcreteCreator::FactoryMethod
+note right of ConcreteCreator::factoryMethod
     implements 
     <b>Factory Method</b>
 end note

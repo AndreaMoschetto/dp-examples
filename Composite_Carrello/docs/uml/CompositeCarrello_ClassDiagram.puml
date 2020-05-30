@@ -1,0 +1,78 @@
+@startuml
+
+'START STYLE
+skinparam{
+    monochrome true
+    'shadowing false
+    classBackgroundColor white
+    noteBackgroundColor white
+    ClassAttributeIconSize 0
+}
+hide circle
+'END STYLE
+
+
+title ClassDiagram: Composite_Carrello
+
+interface Prodotto<<interface>>{
+    + print()
+    + getPrezzo()
+    + getPeso()
+    + add()
+    + remove()
+}
+note right
+    <b>add()</b> and <b>remove()</b>
+    should be called only in Composite Objects
+end note
+
+together {
+    class Libro implements Prodotto{
+        + print()
+        + getPrezzo()
+        + getPeso()
+        + add()
+        + remove()
+    }
+
+    class EBook implements Prodotto{
+        + print()
+        + getPrezzo()
+        + getPeso()
+        + add()
+        + remove()
+    }
+
+    class Carrello implements Prodotto{
+        - nestedElem : List<Prodotto>
+        + print()
+        + getPrezzo()
+        + getPeso()
+        + add()
+        + remove()
+    }
+    note right of Carrello
+    Composite class
+    end note
+}
+
+class Creator{
+    + {static} getLibro() : Prodotto
+    + {static} getEBook() : Prodotto
+    + {static} getCarrello() : Prodotto
+}
+
+class MainCart{
+
+}
+
+Carrello -> Prodotto
+
+Creator -up-> Libro
+Creator -up-> EBook
+Creator -up-> Carrello
+
+MainCart -right-> Creator
+MainCart -up-> Prodotto
+
+@enduml
